@@ -1,0 +1,332 @@
+main.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyMzI2NzN8MHwxfGFsbHwxOXx8fHx8fHwxNjEzNzU2OTk3&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            max-width: 800px;
+            height: 175px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(204, 174, 174, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        #searchBox {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+
+        #searchButton {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #searchButton:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+
+        .book {
+            background-color: #d2b8b8;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            display: flex;
+        }
+
+        .book img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+
+        .book-details {
+            flex-grow: 1;
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .book-authors {
+            color: #777777;
+        }
+        a{ border: 5px solid red;
+            margin-top: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            color: red;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Finder</h1>
+        <input type="text" id="searchBox" placeholder="Enter book name...">
+        <button id="searchButton">Search</button>
+        <a href="http://localhost:3000/">logout</a>
+        <div id="results"></div>
+        
+    </div>
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const query = document.getElementById('searchBox').value;
+            if (query) {
+                // Using Google Books API to search for books
+                fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultsDiv = document.getElementById('results');
+                        resultsDiv.innerHTML = '';
+                        if (data.items && data.items.length > 0) {
+                            const book = data.items[0].volumeInfo;
+                            const bookElement = document.createElement('div');
+                            bookElement.classList.add('book');
+                            
+                            const thumbnail = book.imageLinks ? book.imageLinks.thumbnail : 'https://via.placeholder.com/100x150';
+                            bookElement.innerHTML = `
+                                <img src="${thumbnail}" alt="Book cover">
+                                <div class="book-details">
+                                    <div class="book-title">${book.title}</div>
+                                    <div class="book-authors">${book.authors ? book.authors.join(', ') : 'Unknown Author'}</div>
+                                    <div class="book-description">${book.description ? book.description.substring(0, 200) + '...' : 'No description available'}</div>
+                                    <div class="book-publisher"><strong>Publisher:</strong> ${book.publisher ? book.publisher : 'Unknown Publisher'}</div>
+                                    <div class="book-publishedDate"><strong>Published Date:</strong> ${book.publishedDate ? book.publishedDate : 'Unknown Date'}</div>
+                                    <div class="book-pageCount"><strong>Page Count:</strong> ${book.pageCount ? book.pageCount : 'N/A'}</div>
+                                    <div class="book-url"><strong>Search in Google:</strong> <a href="https://www.google.com/search?q=${encodeURIComponent(book.title)}" target="_blank">${book.title}</a></div>
+                                </div>
+                                
+                            `;
+
+                            resultsDiv.appendChild(bookElement);
+                        } else {
+                            resultsDiv.innerHTML = '<p>No results found</p>';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+</body>
+</html>
+<!--login1.ejs-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+            background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyMzI2NzN8MHwxfGFsbHwxOXx8fHx8fHwxNjEzNzU2OTk3&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            max-width: 800px;
+            height: 200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <form action="/loginSubmit" method="POST">
+        Email: <input type="text" name="em" required><br>
+        Password: <input type="password" name="pw" required><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+<!--signup1.ejs-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+            background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyMzI2NzN8MHwxfGFsbHwxOXx8fHx8fHwxNjEzNzU2OTk3&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            max-width: 800px;
+            height: 325px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="/signUpSubmit" method="POST">
+        Name: <input type="text" name="name" required><br>
+        Phone Number: <input type="text" name="pn" required><br>
+        Email: <input type="email" name="em" required><br>
+        Password: <input type="password" name="pw" required><br>
+        <input type="submit" value="Signup">
+    </form>
+</body>
+</html>
+<!--hom.ejs-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyMzI2NzN8MHwxfGFsbHwxOXx8fHx8fHwxNjEzNzU2OTk3&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+
+        }
+        .container {
+            max-width: 800px;
+            height: 150px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .book-info {
+            text-align: left;
+        }
+        .menu {
+            margin-bottom: 20px;
+           
+        }
+        .menu a {
+            padding:10px;
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+            background-color: aquamarine;
+            border: 3px solid;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Finder</h1>
+        <div class="menu">
+            <a href="http://localhost:3000/signup">Register</a>
+            <a href="http://localhost:3000/login">Login</a>
+        </div>
+        
+</body>
+</html>
+
+                                      
