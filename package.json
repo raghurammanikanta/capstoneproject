@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "bcrypt": "^5.1.1",
+    "firebase-admin": "^12.0.0",
+    "is-odd": "^3.0.1",
+    "is-palindrome": "^0.3.0",
+    "node-telegram-bot-api": "^0.64.0",
+    "num-is-even-or-odd": "^2.0.2",
+    "postcss": "^8.4.38",
+    "prime-number": "^1.0.2",
+    "request": "^2.88.2",
+    "tailwindcss": "^3.4.3"
+  }
+}
